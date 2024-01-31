@@ -1,86 +1,16 @@
-7.	Create a form such that, based on student roll number provided by user, the student details should be fetched ( using ExpressJS)
-File structure :
-
-
-
-app.js
-var express = require('express'); var app = express();
-const html = require('ejs') const path=require('path') app.use(express.json()); app.use(express.urlencoded({ extended: true
-}));
-
-app.set('views', path.join( dirname, 'view')) app.set('view engine','ejs')
-const mongoose=require('mongoose') mongoose.connect('mongodb://localhost/student', function(error){
-if(error) console.log(error);
- 
-
-console.log("connection successful");
-});
-
-
-const searchStudentController = require('./controller/searchStudent') const fetchController= require('./controller/searchdb'); app.get('/search',searchStudentController) app.post('/student/fetch',fetchController);
-
-app.listen(3000, () => console.log("App listening on port 3000!"));
-
-
-
-searchdb.js
-
-const Student = require('../model/student.js') module.exports = (req,res)=>{
-// console.log(req.body.rollno);
-// var test=Student.find({id: req.body.rollno}); Student.find({id: req.body.rollno}, (error, student) => {
-if(error){ console.log(student)
-res.render('search',{stuData:student});
-}
-else{
-
-
-console.log(student) res.render('search',{stuData:student, view:true});
-}
-
-
-})
-}
-
-
-searchStudent.js
-module.exports = (req, res) =>{
- 
-
-student=[]
-res.render('search',{stuData:student, view:false});
-}
-
-
-model/student.js
-const mongoose = require('mongoose') const Schema = mongoose.Schema;
-
-const StudentSchema = new Schema({ name: {
-type: String, required: true, unique: true
-},
-id: {
-type: String, required: true
-},
-course: {
-type: String, required: true
-} ,
-branch:   { type: String,
-required: true
-}
-})
-
-
-// export model
-const Student = mongoose.model('studentinfo',StudentSchema); module.exports = Student
- 
-
-view/search.ejs
+8.	Create a form with ExpressJS that enables CRUD (Create, Read, Update and Delete) operations on the student database.
+home.ejs
 <html>
 <head>
-<title>Student Portal</title>
+<title>Customer Portal</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
 <div class="container-fluid">
 <button
@@ -97,66 +27,51 @@ aria-label="Toggle navigation"
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 <li class="nav-item active">
 <a class="nav-link" aria-current="page" href="/">Home</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="#">Add new Student</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="./search.ejs">Search for an Student </a>
  
-
 </li>
 <li class="nav-item">
-<a class="nav-link" href="#">Update Student details</a>
+<a class="nav-link" href="/page/register">Add new Student</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/search">Search for an Student </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/update">Update Student details</a>
 </li>
 </ul>
 </div>
 </div>
 </nav>
+
 <br><br><br>
-<h3 style="text-align: center;">Student Details </h3>
-
-<form action="/student/fetch" method="POST">
-<input type="text" placeholder="Search by rollno" id="rollno" name="rollno"> <br><br>
-<button type="submit">Fetch</button>
-</form>
-<br><br>
-<br><br>
-<%
-if(view){
-%>
-<table border="1" id="table">
-<tr>
-<th>Sl.No</th>
-<th>Name</th>
-<th>Roll No</th>
-<th>Course</th>
-<th>Branch</th>
-</tr>
-<%
-if(stuData.length!=0){ var i=1;
-stuData.forEach(function(data){
-%>
- 
-
-<tr>
-<td><%=i; %></td>
-<td><%=data.name %></td>
-<td><%=data.id %></td>
-<td><%=data.course %></td>
-<td><%=data.branch %></td>
-</tr>
-<% i++; }) %>
-<% } else{ %>
-<tr>
-<td colspan="4">No Data Found</td>
-</tr>
-<% } %>
-</table>
-<% } %>
+<h3 style="text-align: center;">Welcome to Student CRUD Application Portal </h3>
 </body>
+
 </html>
 
+EXPECTED OUTPUT :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 register.ejs
 <html>
 <head>
@@ -214,6 +129,12 @@ aria-label="Toggle navigation"
 <h1> <%= status %> </h1>
 </body>
 </html>
+
+EXPECTED OUTPUT :
+ 
+ 
+
+
 
 search.ejs
 <html>
@@ -295,8 +216,12 @@ stuData.forEach(function(data){
 </body>
 </html>
 
-update.ejs
 
+EXPECTED OUTPUT :
+ 
+ 
+
+update.ejs
 <html>
 <head>
 <title>Customer Portal</title>
@@ -350,6 +275,5 @@ aria-label="Toggle navigation"
 <h1> <%= status %> </h1>
 </body>
 </html>
-
 
 
