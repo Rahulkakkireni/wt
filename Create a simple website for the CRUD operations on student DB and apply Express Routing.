@@ -1,0 +1,359 @@
+9.	Create a simple website for the CRUD operations on student DB and apply Express Routing.
+controller/index.js
+module.exports = (req, res) =>{ res.render('index')
+}
+
+newCustomer.js module.exports = (req, res) =>{
+data = ' '
+ 
+res.render('register',{status:data}); // render register.ejs
+}
+
+searchdb.js
+const Student = require('../model/student.js') module.exports = (req,res)=>{
+// console.log(req.body.rollno);
+// var test=Student.find({id: req.body.rollno}); Student.find({id: req.body.rollno}, (error, student) => {
+if(error){ console.log(student)
+res.render('search',{stuData:student});
+}
+else{
+
+
+console.log(student) res.render('search',{stuData:student, view:true});
+}
+
+
+})
+}
+
+searchStudent.js
+
+module.exports = (req, res) =>{ student=[]
+res.render('search',{stuData:student, view:false});
+}
+
+storeCustomer.js
+const Student = require('../model/student.js') const path = require('path')
+
+module.exports = (req,res)=>{ console.log(req.body)
+ 
+
+Student.create(req.body, (error, student) => { if(error){
+console.log(error)
+data='Can Not Insert Student Details Please Try Agin'; res.render('register',{status:data});
+}
+else{
+data = 'Student Details Inserted Successfully' res.render('register',{status:data});
+}
+
+})
+}
+
+updateCustomer.js
+module.exports = (req, res) =>{ data = ' '
+res.render('update',{status:data}); // render update.ejs
+}
+
+updatedoc.js
+const Student = require('../model/student.js') module.exports = (req,res)=>{
+var test={}; if(req.body.name){ test.name=req.body.name }; if(req.body.id){
+test.id=req.body.id }; if(req.body.course){
+test.course=req.body.course };
+ 
+if(req.body.branch){
+test.branch=req.body.branch };
+// console.log(test);
+
+Student.updateOne({name: req.body.cname}, { $set: test },(error, student) => { if(error){
+console.log(student)
+data='Can Not Update Student Details Please Try Agin'; res.render('update',{status:data});
+}
+else{
+data = 'Student Details Updated Successfully' res.render('update',{status:data});
+}
+}
+)
+}
+//{cname: req.body.cnamenew, email: req.body.email, phone: req.body.phone, city: req.body.city }
+
+
+
+model/student.js
+
+const mongoose = require('mongoose') const Schema = mongoose.Schema;
+
+const StudentSchema = new Schema({ name: {
+type: String, required: true, unique: true
+},
+id: {
+type: String,
+ 
+required: true
+},
+course: {
+type: String, required: true
+} ,
+branch: { type: String,
+required: true
+}
+})
+
+
+
+// export model
+const Student = mongoose.model('studentinfo',StudentSchema); module.exports = Student
+
+
+home.ejs
+<html>
+<head>
+<title>Customer Portal</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+<div class="container-fluid">
+<button
+ 
+class="navbar-toggler" type="button"
+data-mdb-toggle="collapse"
+data-mdb-target="#navbarExample01" aria-controls="navbarExample01"
+aria-expanded="false"
+aria-label="Toggle navigation"
+>
+
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarExample01">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<li class="nav-item active">
+<a class="nav-link" aria-current="page" href="/">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/register">Add new Student</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/search">Search for an Student </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/update">Update Student details</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+
+<br><br><br>
+<h3 style="text-align: center;">Welcome to Student CRUD Application Portal </h3>
+</body>
+ 
+</html>
+
+
+
+
+register.ejs
+<html>
+<head>
+<title>Customer Portal</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+<div class="container-fluid">
+<button
+class="navbar-toggler" type="button"
+data-mdb-toggle="collapse"
+data-mdb-target="#navbarExample01" aria-controls="navbarExample01"
+aria-expanded="false"
+aria-label="Toggle navigation"
+>
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarExample01">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<li class="nav-item active">
+<a class="nav-link" aria-current="page" href="/">Home</a>
+</li>
+<li class="nav-item">
+ 
+<a class="nav-link" href="/page/register">Add new Student</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/search">Search for a Student </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/update">Update Student details</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+
+<br><br><br>
+<h3 style="text-align: center;">Welcome to Student CRUD Application Portal </h3>
+
+<form action="/customer/register" method="POST">
+<label for="sname">Student Name:</label>
+<input type="text" placeholder="Student Name" id="name" name="name"> <br><br>
+<label for="id">Student Roll No:</label>
+<input type="text" placeholder="Roll No" id="id" name="id"> <br><br>
+<label for="course">Course:</label>
+<input type="text" placeholder="Course" id="course" name="course" > <br><br>
+<label for="branch">Branch:</label>
+<input type="text" placeholder="Branch" id="branch" name="branch"> <br><br>
+<button type="submit" >Add</button>
+</form>
+<h1> <%= status %> </h1>
+</body>
+</html>
+ 
+
+search.ejs
+<html>
+<head>
+<title>Student Portal</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+<div class="container-fluid">
+<button
+class="navbar-toggler" type="button"
+data-mdb-toggle="collapse"
+data-mdb-target="#navbarExample01" aria-controls="navbarExample01"
+aria-expanded="false"
+aria-label="Toggle navigation"
+>
+
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarExample01">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<li class="nav-item active">
+<a class="nav-link" aria-current="page" href="/">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/register">Add new Student</a>
+</li>
+<li class="nav-item">
+ 
+<a class="nav-link" href="./search.ejs">Search for a Student </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/update">Update Student details</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<br><br><br>
+<h3 style="text-align: center;">Student Details </h3>
+
+<form action="/student/fetch" method="POST">
+<input type="text" placeholder="Search by rollno" id="rollno" name="rollno"> <br><br>
+<button type="submit">Fetch</button>
+</form>
+<br><br>
+<br><br>
+<%
+if(view){
+%>
+<table border="1" id="table">
+<tr>
+<th>Sl.No</th>
+<th>Name</th>
+<th>Roll No</th>
+<th>Course</th>
+<th>Branch</th>
+</tr>
+<%
+if(stuData.length!=0){ var i=1;
+stuData.forEach(function(data){
+ 
+%>
+<tr>
+<td><%=i; %></td>
+<td><%=data.name %></td>
+<td><%=data.id %></td>
+<td><%=data.course %></td>
+<td><%=data.branch %></td>
+</tr>
+<% i++; }) %>
+<% } else{ %>
+<tr>
+<td colspan="4">No Data Found</td>
+</tr>
+<% } %>
+</table>
+<% } %>
+</body>
+</html>
+
+
+
+update.ejs
+
+<html>
+<head>
+<title>Customer Portal</title>
+<link	rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+<div class="container-fluid">
+<button
+class="navbar-toggler" type="button"
+data-mdb-toggle="collapse"
+ 
+data-mdb-target="#navbarExample01" aria-controls="navbarExample01"
+aria-expanded="false"
+aria-label="Toggle navigation"
+>
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarExample01">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<li class="nav-item active">
+<a class="nav-link" aria-current="page" href="/">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/register">Add new Student</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/search">Search for a Student </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/page/update">Update Student details</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+
+<br><br><br>
+<h3 style="text-align: center;">Welcome to the Express mongo connection Portal </h3>
+
+<form action="/customer/update" method="POST">
+<input type="text" placeholder="StudentbName to be update" id="cname" name="cname">
+<br><br>
+<input type="text" placeholder="Student Name" id="name" name="name"> <br><br>
+<input type="email" placeholder="Roll No" id="id" name="id"> <br><br>
+<input type="text" placeholder="Course" id="course" name="course" > <br><br>
+<input type="text" placeholder="Branch" id="branch" name="branch"> <br><br>
+<button type="submit" >Update</button>
+</form>
+<h1> <%= status %> </h1>
+</body>
+</html>
