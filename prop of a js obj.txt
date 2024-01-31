@@ -1,0 +1,10 @@
+e) Write a JavaScript program to list the properties of a JavaScript object – “five.js”
+let object = {
+name: 'Jack',
+age: 25,
+college: 'KMIT',
+year: 3,
+sem: 1
+};
+let properties = Object.keys(object)
+console.log(properties);

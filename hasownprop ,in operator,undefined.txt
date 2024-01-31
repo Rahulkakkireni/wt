@@ -1,0 +1,26 @@
+f) Write a JavaScript function to check whether an object contains given property. –
+“six.js”
+1. hasOwnProperty() method
+let object = {
+name: 'Jack',
+age: 25,
+college: 'KMIT',
+year: 3,
+sem: 1
+};
+console.log(object.hasOwnProperty('name'));
+
+let object = {
+name: 'Jack',
+age: 25,
+college: 'KMIT', year: 3, sem: 1
+};
+console.log(‘name’ in object)
+
+let object = {
+name: 'Jack',
+age: 25,
+college: 'KMIT', year: 3, sem: 1
+};
+console.log(object.name);
+console.log(object.fee);
